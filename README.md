@@ -1,123 +1,161 @@
-# VC Map Core @vcmap/core
+# VC Map Core (`@vcmap/core`)
 
-> Part of the [VC Map Project](https://github.com/virtualcitySYSTEMS/map-ui)
+**Provided by:** VC Map Project (virtualcitySYSTEMS)
 
-> [API Docs](https://lib.virtualcitymap.de/core/6.0/docs/)
+## Description
 
-The VC Map Core is a thin abstraction layer and wrapper around OpenLayers and Cesium.
-It provides a common data and feature management API and automatically synchronizes data and user actions between the 2D, oblique and 3D views.
-Map functions and tools can be developed against this core API to make them available in 2D, 3D and the oblique view rather than having to develop
-them redundantly and based on different technologies.
+VC Map Core is a thin abstraction layer around OpenLayers and Cesium. It provides a common API for data and feature management and synchronizes data and user actions across 2D, oblique, and 3D views. Applications can build map functions and tools against the core API for use across those views, rather than implementing them separately for different technologies.
 
-# Features
+## Installation Prerequisites
 
-## [Maps](./documentation/maps.md)
+- Node.js and npm. The provided documentation does not specify minimum versions.
+- OpenLayers and Cesium are used by the core. Their integration is provided through the VC Map Core API.
 
-Allows rendering content on three different maps. This allows to select the best technology for a specific usecase, but
-still work with the same API.
+## Installation Instructions
 
-- 2D Map using Openlayers
-- 3D Map using CesiumJs
-- Oblique Map using Openlayers
+1. Clone the VC Map Core repository.
+2. Navigate to the repository directory.
+3. Install dependencies:
 
-## [VcsApp](./documentation/vcsApp.md)
+   ```bash
+   npm install
+   ```
 
-A main class to manage items (`maps`, `layers`, `viewpoints`, `styles`). The VcsApp has a API to add/get/list
-items in different Collections. For example the LayerCollection: `const layer = vcsApp.layers.getByKey('myLayerName');`
-The VcsApp also provides an API to parse and serialize `Modules`. An Item can be added via parsing of a module or directly
-via the API.
+The provided documentation does not include deployment or production packaging instructions.
 
-## [Layers](./documentation/layers.md)
+## Built Image Registry
 
-Some layer are map specific and only work for example in 3D. Layers can be created via the API
-`new CesiumTilesetLayer(options);` or loaded into the `VcsApp` in a `Module`. The Core supports the following layer types.
+Not specified in the provided documentation.
 
-#### Only 3D
+## License
 
-- CesiumTilesetLayer (3D Tiles OGC Community Standard)
-- CzmlLayer Cesium Czml (https://github.com/AnalyticalGraphicsInc/czml-writer/wiki/CZML-Guide)
-- PointCloudLayer (using CesiumTilesetLayer)
-- TerrainLayer Cesium Quantized-Mesh (https://github.com/CesiumGS/quantized-mesh)
+This project is licensed under the MIT License.
 
-#### Supported in 2D and 3D
+Copyright (c) 2023 virtualcitySYSTEMS
 
-- WMS Layer
-- WMTS Layer
-- TMS Layer
-- SingleImageryLayer
-- Vector Tile Layer
-- OpenstreetMap Layer
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-#### Supported in 2D, 3D and Oblique
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-- WFS Layer
-- GeoJSON Layer
-- Vector Layer (allows adding Features via API) `layer.addFeature(new Feature({ geometry: new Polygon({...}) }))`
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#### FeatureLayer `Vector`, `WFSLayer`, `GeoJSONLayer`, `VectorLayer`, `CesiumTileset`
+## External technical resources
 
-Layers which provide Features have a common API to hide/highlight/style/access Features.
+- [VC Map Project](https://github.com/virtualcitySYSTEMS/map-ui)
+- [CZML Guide](https://github.com/AnalyticalGraphicsInc/czml-writer/wiki/CZML-Guide)
+- [Quantized-Mesh terrain format](https://github.com/CesiumGS/quantized-mesh)
 
-## [Styles](./documentation/style.md)
+## User Guide References
 
-The Core supports two style types. A `DeclarativeStyleItem` using the Cesium [3D Tiles Styling](https://github.com/CesiumGS/3d-tiles/tree/main/specification/Styling) language
-and a `VectorStyleItem` which is based on Openlayers Styling.
-Both Style Items can be serialized to JSON and work for `VectorLayer`, `GeoJSONLayer`, `CesiumTilesetLayer`, `VectorTileLayer`.
-`DeclarativeStyleItem` can be used to style each Feature in a dataset based on attribute values or rules depending on attributes.
-`VectorStyleItem` are best to for static styling of a complete dataset.
+The source mentions API documentation but does not include a link. No separate user guide or FAQ links were provided.
 
-## [Configuration Management](./documentation/vcsModule.md)
+## Additional Information
 
-The core provides a flexible and fully customizable configuration management. Items like `maps`, `layers`, `viewpoints`, `styles` can be managed in `Modules`.
-`Modules` can be serialized to a JSON file and loaded/unloaded by the VcsApp.
+### Maps
 
-## [Interactions API](./documentation/interaction.md)
+The core supports three map types:
 
-The Interactions API is an abstraction layer to handle map events. For example a click event on the Map.
-This allows for developing applications which work in 2D/3D or oblique.
+- **2D map:** OpenLayers.
+- **3D map:** CesiumJS.
+- **Oblique map:** OpenLayers.
 
-## Feature Editor API
+The same core API can be used across the supported views.
 
-Based on the Interactions API the Feature Editor provides functionality to `create`, `select`, and `transform` Features.
+### `VcsApp`
 
-## Parametrized Features API
+`VcsApp` is the main class for managing items such as maps, layers, viewpoints, and styles. It provides APIs to add, get, and list items in different collections. For example:
 
-Vector Features can be shown in a `VectorLayer` or `GeoJSONLayer`. GeoJSON Feature are just 2D, and in a 2D Map the Feature
-will just be rendered. In 3D a Feature can be rendered differently depending on the VectorLayer settings or the properties
-of the Feature.
+```js
+const layer = vcsApp.layers.getByKey('myLayerName');
+```
 
-- Render a Feature as a Solid via `extrusion` Parameter.
-- Render a Point Feature as a Gltf Model.
-- Render a Feature as a Classification Primitive to classifiy other content.
+`VcsApp` also provides APIs for parsing and serializing modules. Items can be added by parsing a module or directly through the API.
 
-More options see [VectorProperties](./src/layer/vectorProperties.ts)
+### Layers
 
-## Categories
+Some layers are map-specific and, for example, work only in 3D. Layers can be created through the API or loaded into `VcsApp` from a module.
 
-Categories is a concept to serialize and parse arbitrary JSON Objects from a Module.
+**3D only**
 
-## Openlayers/CesiumJs
+- `CesiumTilesetLayer` — 3D Tiles OGC Community Standard.
+- `CzmlLayer` — Cesium CZML.
+- `PointCloudLayer` — uses `CesiumTilesetLayer`.
+- `TerrainLayer` — Cesium Quantized-Mesh terrain.
 
-The full capability of Openlayers and CesiumJs are available. In 3D, a map for example has an accessor to get the corresponding
-Cesium Scene.
+**Supported in 2D and 3D**
 
-## Extensibility
+- WMS layer.
+- WMTS layer.
+- TMS layer.
+- `SingleImageryLayer`.
+- Vector tile layer.
+- OpenStreetMap layer.
 
-With the ClassRegistry concept and API its possible to register your own Item Types to the Framework.
-For example with `app.layerClassRegistry.registerClass('myLayer', MyLayerClass)` its possible to implement a custom layer
-while following the Layer Interface. This allows to reuse the Module serialization/parsing Concept with custom Items.
+**Supported in 2D, 3D, and oblique views**
 
-## Getting Started
+- WFS layer.
+- GeoJSON layer.
+- Vector layer, which allows features to be added through the API, for example:
 
-- clone Repo
-- npm install
+  ```js
+  layer.addFeature(new Feature({ geometry: new Polygon({...}) }));
+  ```
 
-# Coding Conventions
+Feature-providing layers—including `VectorLayer`, `WFSLayer`, `GeoJSONLayer`, and `CesiumTilesetLayer`—share an API for hiding, highlighting, styling, and accessing features.
 
-### Exporting from a module
+### Styles
 
-- You should export all variables, functions, class etc. from a module
-  which are required to use the API.
-- Party of your module which should be part of the library must be added to the index.ts file manually
-- Make sure the names of exports have _meaning outside of their module_. E.g. a
-  function names `extend(destination: extent3D, source: extend3D):void` would need to be rephrased to `extend3DExtent`.
+The core supports two style item types:
+
+- **`DeclarativeStyleItem`** uses the Cesium 3D Tiles Styling language. It can style dataset features using attribute values or rules based on attributes.
+- **`VectorStyleItem`** is based on OpenLayers styling and is suited to static styling of a complete dataset.
+
+Both style item types can be serialized to JSON and work with `VectorLayer`, `GeoJSONLayer`, `CesiumTilesetLayer`, and `VectorTileLayer`.
+
+### Configuration management
+
+Items such as maps, layers, viewpoints, and styles can be managed in modules. Modules are customizable, can be serialized to JSON, and can be loaded or unloaded by `VcsApp`.
+
+### Interactions API
+
+The Interactions API abstracts map events, such as clicks, so applications can be developed for 2D, 3D, and oblique views.
+
+### Feature Editor API
+
+Built on the Interactions API, the Feature Editor provides functionality to create, select, and transform features.
+
+### Parametrized Features API
+
+Vector features can be displayed in a `VectorLayer` or `GeoJSONLayer`. GeoJSON features are 2D and render directly in a 2D map. In 3D, a feature’s appearance can depend on the vector layer settings or the feature’s properties.
+
+Features can be:
+
+- Rendered as solids using an extrusion parameter.
+- Rendered as GLTF models when they are point features.
+- Rendered as classification primitives to classify other content.
+
+See `VectorProperties` for further options.
+
+### Categories
+
+Categories provide a way to serialize and parse arbitrary JSON objects from a module.
+
+### OpenLayers and CesiumJS access
+
+The full capabilities of OpenLayers and CesiumJS are available. For example, a 3D map provides an accessor for its corresponding Cesium `Scene`.
+
+### Extensibility
+
+The `ClassRegistry` concept and API allow custom item types to be registered with the framework. For example:
+
+```js
+app.layerClassRegistry.registerClass('myLayer', MyLayerClass);
+```
+
+A custom layer can implement the Layer interface and use the module serialization and parsing system.
+
+### Coding conventions
+
+Export variables, functions, classes, and other symbols from a module when they are required by the public API. Add public library exports to the module’s `index.ts` file manually.
+
+Use names that are meaningful outside their module. For example, a function named `extend` that operates on 3D extents should use a more specific name such as `extend3DExtent`.
